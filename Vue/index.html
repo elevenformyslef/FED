@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <!--模板->vue   真实的dom -->
+    <div id="app">
+        <h1>商品管理系统</h1>
+        <ul>
+            <li v-for="item in products">
+                商品名称：{{item.name}},商品库存:
+                <button @click="changeStock(item,item.stock -1)",item.newStock>-</button>
+                {{item.stock}}
+                <button @click="changeStock(item,item.stock +1)">+</button>
+            </li>
+        </ul>
+        <p>
+            总库存：{{total}}
+        </p>
+    </div>
+    <script src="./vue.min.js"></script>
+    <script>
+        var vm = new Vue(
+            {
+                el: '#app',
+                data: {
+                    //页面中使用的数据
+                    products:[
+                        {name:"Dior",stock:10},
+                        {name:"Channel",stock:9},
+                        {name:"Burberry",stock:5},
+                    ],
+                },
+            },
+        );
+        computed:{
+            total(){
+                this.products.reduce((a,b)=>a+b.stock,0);
+            }
+        }
+        methods:{
+            changeStock(product,newStock){
+                if(newStock < 0){
+                    newStock = 0;
+                }
+                product.stock = newStock;
+            },
+            remove(product){
+                this.products.splice(this.products.indexOf(product),1);
+            }
+
+        }
+    </script>
+</body>
+</html>
